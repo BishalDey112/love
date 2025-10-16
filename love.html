@@ -10,11 +10,13 @@
   <div class="content">
     <h1 class="love-title">For My Love 💕</h1>
 
-    <div class="image-gallery">
-      <!-- Replace these image links with your own -->
-      <img src="download.jpg" alt="Memory 1" />
-      <img src="download2.jpg" alt="Memory 2" />
-      <img src="download3.jpg" alt="Memory 3" />
+    <div class="carousel-container">
+      <div class="carousel">
+        <!-- Replace these with your images -->
+        <img src="download.jpg" alt="Memory 1" />
+        <img src="download2.jpg" alt="Memory 2" />
+        <img src="download3.jpg" alt="Memory 3" />
+      </div>
     </div>
 
     <h2 class="love-text">
@@ -37,6 +39,33 @@
       hearts.appendChild(heart);
       setTimeout(() => heart.remove(), 5000);
     }, 500);
+
+    // Carousel snapping for center
+    const carousel = document.querySelector('.carousel');
+    const imgs = carousel.querySelectorAll('img');
+
+    let currentIndex = 0;
+    function scrollToIndex(index) {
+      const imgWidth = imgs[0].offsetWidth;
+      carousel.scrollTo({
+        left: imgWidth * index - (window.innerWidth / 2 - imgWidth / 2),
+        behavior: 'smooth'
+      });
+    }
+
+    scrollToIndex(currentIndex);
+
+    // Optional: auto-center image on scroll end
+    let isScrolling;
+    carousel.addEventListener('scroll', () => {
+      window.clearTimeout(isScrolling);
+      isScrolling = setTimeout(() => {
+        const scrollLeft = carousel.scrollLeft;
+        const imgWidth = imgs[0].offsetWidth;
+        currentIndex = Math.round((scrollLeft + window.innerWidth/2 - imgWidth/2) / imgWidth);
+        scrollToIndex(currentIndex);
+      }, 100);
+    });
   </script>
 </body>
 </html>
